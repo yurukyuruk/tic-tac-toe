@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import * as ReactDOM from 'react-dom';
 import './index.css';
 
@@ -44,8 +44,8 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       history: [{
         squares: Array(9).fill(null),
@@ -58,6 +58,7 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
+    const colors = ["red", "blue", "orange", "yellow", "green", "purple", "pink", "black", "gray"];
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
@@ -68,6 +69,7 @@ class Game extends React.Component {
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
+      color: colors[i],
     });
   }
   jumpTo(step) {
@@ -96,6 +98,7 @@ class Game extends React.Component {
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
+    let currentColor = this.state.color;
     return (
       <div className="game">
         <div className="game-board">
@@ -106,7 +109,7 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <ol style={{color: currentColor}}>{moves}</ol>
         </div>
       </div>
     );
